@@ -1,4 +1,4 @@
-# Repository for course work from USU CS3100 – Operating Systems and Concurrency
+# USU CS3100 – Operating Systems and Concurrency
 All work programmed in C++ on a Raspberry Pi, and optimized to run with Raspbian 
 
 ## Assignments:
