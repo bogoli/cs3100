@@ -15,12 +15,13 @@ int main(){
 		
 		auto end = std::chrono::system_clock::now();
 		auto timeDiff = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-		
+		std::cout << "Time executing child process " << timeDiff.count() << std::endl;	
 	}
 	else{
-		
+		std::cout << "child process\n";
 	}
 
+	
 
 	return 0;
 }

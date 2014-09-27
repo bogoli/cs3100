@@ -1,0 +1,13 @@
+# Compiled Object files
+*.lo
+
+# Notes
+*.pdf
+notes/**
+
+# Zipped assignments for turning in
+*.zip
+
+
+# Executables
+*.app
