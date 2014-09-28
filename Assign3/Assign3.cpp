@@ -7,14 +7,13 @@ int main(){
 
 	std::string input;
 	std::vector<std::string> history{};
-
+	std::chrono::microseconds totalTime(0);
+	
 	do {
 		std::cout << "> ";
 		std::getline(std::cin, input);
 		
-	} while(execute(input, history));	
+	} while(execute(input, history, totalTime));	
 
 	return 0;
 }
-
-//    std::chrono::microseconds exectime(0);
