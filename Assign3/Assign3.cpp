@@ -12,7 +12,7 @@ int main(){
 		std::cout << "> ";
 		std::getline(std::cin, input);
 		
-	} while(true);	
+	} while(execute(input, history));	
 
 	return 0;
 }

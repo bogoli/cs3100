@@ -11,4 +11,4 @@
 #include <vector>
 
 
-bool execute();
+bool execute(std::string &, std::vector<std::string> &);
