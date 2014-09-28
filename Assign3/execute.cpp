@@ -2,6 +2,7 @@
 // execute.cpp
 
 #include "execute.hpp"
+
 std::vector<std::string> split(std::string originalString, char c){
 	std::vector<std::string> stringVector;
 	std::string subString;
@@ -93,9 +94,6 @@ bool execute(std::string &input, std::vector<std::string> &history, std::chrono:
 
 			// display runtime
 			else if(inputVector.at(0) == "ptime"){
-				// add input to history
-				history.insert(history.begin(),input);
-
 				// need to be typcast to durations for calulations
 				auto sec = std::chrono::duration_cast<std::chrono::seconds>(totalTime);
 				auto milli = std::chrono::duration_cast<std::chrono::milliseconds>(totalTime - sec);
@@ -142,7 +140,7 @@ bool execute(std::string &input, std::vector<std::string> &history, std::chrono:
 
 			return true;
 		}
-	} catch(std::out_of_range e){
+	} catch(std::exception& e){
 		return true;
 	}
 }

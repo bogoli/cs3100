@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
+#include <exception>
 #include <iostream>
 #include <cstring>
 #include <string>
