@@ -36,13 +36,7 @@ The shell should keep a history of the previous commands entered, with no maximu
 
 The command 'exit' is used to terminate your shell program, when entered, your shell program should end.
 
-Write a makefile that builds your program, including a 'clean' target.
-You must use fork, execvp, wait and std::chrono to complete this assignment.
-Your shell must accept any number of parameters, if the max number of parameters is hard-coded, up to 6 points will be taken off.
-Your shell must not have any global variables, up to 10 points taken off for global variables.
-Your shell must not crash when the user enters bad commands or bad command arguments.
+You must use fork, execvp, wait and std::chrono to complete this assignment. Your shell must accept any number of parameters, if the max number of parameters is hard-coded, up to 6 points will be taken off. Your shell must not have any global variables, up to 10 points taken off for global variables. Your shell must not crash when the user enters bad commands or bad command arguments.
 
 ### 4: Shell + output piping
-Update your command shell to provide the ability to pipe the output of one command to the input of another, using the vertical bar | as the pipe separator.  You only need to support piping between two commands.  This part of the assignment is worth 20 points.  If you enhance your shell to pipe between any number of programs, I'll award 5 bonus points that I'll add to a previous assignment on which you didn't receive full credit; you can also just do it to be cool even if you have full credit on all your assignments (and no, don't ask, I won't add those points to a quiz).
-
-You must also correct any problems you know about and were also identified by the grader from assignment 3.  This is worth 10 points.
+Update your command shell to provide the ability to pipe the output of one command to the input of another, using the vertical bar | as the pipe separator.  You only need to support piping between two commands. 
