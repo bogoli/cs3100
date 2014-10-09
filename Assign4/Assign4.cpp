@@ -10,7 +10,7 @@ int main(){
 	std::chrono::microseconds totalTime(0);
 	
 	do {
-		std::cout << "> ";
+		std::cout << "[cmd]: ";
 		std::getline(std::cin, input);
 		
 	} while(execute(input, history, totalTime));	
