@@ -16,7 +16,7 @@ std::vector<std::string> split(std::string originalString, char c);
 
 bool shell(std::vector<std::string> &, std::vector<std::string> &, std::chrono::microseconds &);
 
-bool pipeCheck(std::vector<std::string> &, std::vector<std::string>::iterator &, int &);
+bool pipeCheck(std::vector<std::string> &, int &);
 
 bool shellPipe(std::vector<std::string> &, std::vector<std::string> &, std::vector<std::string> &, std::chrono::microseconds &);
 

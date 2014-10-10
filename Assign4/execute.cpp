@@ -154,12 +154,12 @@ bool shell(std::vector<std::string> &inputVector, std::vector<std::string> &hist
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool pipeCheck(std::vector<std::string> &inputVector, std::vector<std::string>::iterator &inputPipeLoc, int &inputPipeLocInt){
+bool pipeCheck(std::vector<std::string> &inputVector, int &inputPipeLocInt){
 	// returns false if no pipe, true if there's a pipe
 	int i = 0;
 	for(std::string s : inputVector){
 		if(s.compare("|") == 0){
-			std::vector<std::string>::iterator inputPipeLoc = std::find(inputVector.begin(), inputVector.end(), "|");
+			// std::vector<std::string>::iterator inputPipeLoc = std::find(inputVector.begin(), inputVector.end(), "|");
 			inputPipeLocInt = i;
 			return true;
 		}
@@ -280,8 +280,7 @@ bool execute(std::string &input, std::vector<std::string> &history, std::chrono:
 	int inputPipeLocInt = 0;
 	std::vector<std::string> inputVector = split(input, ' ');
 	// check for pipe
-	std::vector<std::string>::iterator inputPipeLoc = inputVector.begin();
-	if(pipeCheck(inputVector, inputPipeLoc, inputPipeLocInt)){
+	if(pipeCheck(inputVector, inputPipeLocInt)){
 		// std::cout << "inputPipeLoc = " << inputPipeLoc << std::endl;
 		
 		try{
