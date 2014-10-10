@@ -148,31 +148,83 @@ try{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool pipeCheck(std::vector<std::string> &inputVector){
+	// returns false if no pipe, true if there's a pipe
+	for(std::string s : inputVector){
+		if(s.compare("|") == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	return false;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool shellPipe(std::vector<std::string> &inputVector, std::vector<std::string> &inputVector2, std::vector<std::string> &history, std::chrono::microseconds &totalTime){
+	// add input to history 
+	// first combine vector back to string, then add to history vector
+	std::string addToHistory;
+	for(std::string s : inputVector){
+		addToHistory.append(s);
+		addToHistory.append(" "); // to preserve the intial input
+	}
+	// add the pipe (to history)
+	addToHistory.append("|");
+
+	// add the second string to history
+	for(std::string s : inputVector){
+		addToHistory.append(s);
+		addToHistory.append(" ");
+	}
+
+	history.insert(history.begin(),addToHistory);
+
+	if (fork()){
+		// start the clock
+		auto startTime = std::chrono::system_clock::now();
+		// wait for child process to finish
+		wait(NULL);
+		// stop the clock
+		auto endTime = std::chrono::system_clock::now();
+
+		// add difference to total time
+		totalTime += std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+	}
+	else{
+		int argc = (int)inputVector.size();
+
+		char** args = new char*[argc + 1];
+
+		for(int i = 0; i < argc; ++i){
+			int length = inputVector[i].length() + 1;
+			args[i] = new char[length];
+			strncpy(args[i], inputVector[i].c_str(), length);
+		}
+		// add the terminating character for execvp					
+		args[argc] = NULL;
+
+		execvp(args[0], args);
+		// terminate this child process
+		return false;	 				
+	}
+	return true;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool execute(std::string &input, std::vector<std::string> &history, std::chrono::microseconds &totalTime){
 	std::vector<std::string> inputVector = split(input, ' ');
-	return shell(inputVector, history, totalTime);
-	
+	// check for pipe
+	if(pipeCheck(inputVector)){
+		// find where the pipe is
+	}
+	else{
+		return shell(inputVector, history, totalTime);
+	}
+	return true;
 } // end execute
 
 
-/*
-
-
-// check for pipe
-for(std::string s : inputVector){
-	if(s.compare("|") == 0){
-		
-	}
-}
-
-} // ends if it's not pipe
-				else{
-					std::cout << "there's a pipe\n";
-				}
-
-				// PIPE SECTION HERE
-
-			}// end for loop that checks for pipe
-
-
-*/
