@@ -1,13 +1,20 @@
 // Lia Bogoev
 // CS3100 - Assignment 5
 
-#include <iostream>
+#include <chrono>
 #include <exception>
 #include <iomanip>
+#include <iostream>
+#include <random>
+
 
 int main(int argc, char* argv[]){
 	int producers = 0;
 	int consumers = 0;
+
+	// construct a trivial random generator engine from a time-based seed:
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::default_random_engine generator (seed);
 
 	if(argc == 3){
 		// correct number of arguments
@@ -22,9 +29,14 @@ int main(int argc, char* argv[]){
 		std::cout << "Producers: " << producers << std::endl;
 		std::cout << "Consumers: " << consumers << std::endl;
 		*/ 
-
-
-
+		for (int i=0; i<50; ++i) {
+			std::normal_distribution<double> distribution(50,10);
+			// std::uniform_int_distribution<int> distribution(1,6);
+			double chosenNumber = std::round(distribution(generator)); 
+			if(chosenNumber < 1){chosenNumber = 1;}
+			else if(chosenNumber > 100){chosenNumber = 100;}
+			else{std::cout << chosenNumber << "\n";}
+		}
 
 
 
