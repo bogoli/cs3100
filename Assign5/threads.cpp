@@ -3,8 +3,9 @@
 
 #include "threads.hpp"
 
-int makeRandom(int i){
-	unsigned seed = i;
+int makeRandom(int i, std::mutex& mutex){
+	std::lock_guard<std::mutex> lock(mutex);
+	unsigned seed = time(NULL) - i;
 	std::default_random_engine generator (seed);
 
 	std::normal_distribution<double> distribution(50,10);
@@ -17,18 +18,9 @@ int makeRandom(int i){
 }
 
 void makeThread(int threadId, std::mutex& mutex){
-	std::lock_guard<std::mutex> lock(mutex);
-	std::cout << "Thread: " << threadId;
-	std::cout << " Value: " << makeRandom(threadId) << std::endl;
-	sleep(1);
-
+	while(true){
+		std::cout << "Thread: " << threadId;
+		std::cout << "   Value: " << makeRandom(threadId, std::ref(mutex)) << std::endl;
+		sleep(1);
+	}
 }
-
-template <typename T>
-class SynchronizedPriorityQueue{
-public:
-    SynchronizedPriorityQueue();
-    void enqueue(T value);  // Add a new item to the queue
-    T dequeue();            // Removes an item from the queue
-    std::size_t size();     // Returns the number of available items
-};

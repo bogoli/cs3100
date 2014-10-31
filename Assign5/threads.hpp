@@ -10,7 +10,7 @@
 #include <random>
 #include <thread>
 #include <unistd.h>
+#include <vector>
 
-
-int makeRandom(int);
+int makeRandom(int, std::mutex&);
 void makeThread(int, std::mutex&);
