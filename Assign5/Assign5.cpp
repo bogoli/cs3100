@@ -2,9 +2,11 @@
 // CS3100 - Assignment 5
 
 #include "threads.hpp"
+#include "syncClass.hpp"
 
 int main(int argc, char* argv[]){
-	std::mutex mutex; 
+	std::mutex mutex;
+	std::mutex coutMutex; 
 
 	int producerSize = 0;
 	int consumerSize = 0;
@@ -21,20 +23,34 @@ int main(int argc, char* argv[]){
 			std::cout << "Invalid Parameter\n";	
 		} // end try catch block 
 
+		SynchronizedPriorityQueue<int> queue; 
+
 		std::vector<std::thread> producers(producerSize);
 		std::vector<std::thread> consumers(consumerSize);
 
 		// start a thread for each producer
 		for(int i = 0; i < producerSize; ++i){			
-			producers[i] = std::thread(makeThread, (i + 1), std::ref(mutex));
+			producers[i] = std::thread(makeProducerThread, (i + 1), std::ref(mutex), std::ref(queue));
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		}
 
-		// join all the threads
+		// start a thread for each consumer
+		for(int i = 0; i < consumerSize; ++i){		
+			consumers[i] = std::thread(makeConsumerThread, (i + 1), std::ref(coutMutex),std::ref(queue));
+		}
+
+
+		// join all the producer threads
 		for (int i = 0; i < producerSize; ++i) {
 			producers[i].join();
 		}
 		
+		// join all the consumer threads
+		for (int i = 0; i < consumerSize; ++i) {
+			consumers[i].join();
+		}
+
+
 	
 	}// end if there are the correct number of inputs
 

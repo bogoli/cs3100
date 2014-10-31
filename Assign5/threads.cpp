@@ -17,10 +17,22 @@ int makeRandom(int i, std::mutex& mutex){
 	}
 }
 
-void makeThread(int threadId, std::mutex& mutex){
+void makeProducerThread(int threadId, std::mutex& mutex, SynchronizedPriorityQueue<int> &queue){
 	while(true){
-		std::cout << "Thread: " << threadId;
-		std::cout << "   Value: " << makeRandom(threadId, std::ref(mutex)) << std::endl;
+		int randomNumber = makeRandom(threadId, std::ref(mutex));
+		queue.enqueue(randomNumber);
 		sleep(1);
+	}
+}
+
+void makeConsumerThread(int threadId, std::mutex& coutMutex, SynchronizedPriorityQueue<int> &queue){
+	while(true){
+		int randomNumber = queue.dequeue();
+		{
+           std::lock_guard<std::mutex> lock(coutMutex);
+           std::cout << "Thread " << threadId << " consumes " << randomNumber << std::endl;
+       	}
+
+		sleep(3);
 	}
 }
