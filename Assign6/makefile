@@ -4,17 +4,16 @@
 # Compile and link shared libraries:
 # gcc -c -fpic library.cpp
 # gcc -shared -o library.so library.o
-# 
-# Compile and link a program that uses shared libraries:
-# g++ -o program program.cpp -ldl
 
-trig.app: Assign6.o
-	g++ -std=c++11 -o trig.app Assign6.o 
+trig: Assign6.o trig-lookup.o
+	g++ -std=c++11 -o trig Assign6.cpp -ldl  #-ldl for shared libraries
 
-Assign6.o: Assign6.cpp 
-	g++ -std=c++11 -c Assign6.cpp
+trig-lookup.o: trig-lookup.cpp
+	gcc -c -fpic trig-lookup.cpp
+	gcc -shared -o trig-lookup.so trig-lookup.o
 
 clean:
-	rm *.app
+	rm trig
+	rm *.so
 	rm *.o
 
