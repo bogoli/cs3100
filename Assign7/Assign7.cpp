@@ -23,7 +23,7 @@ bool contains(std::deque<int>& memory, int i){
 
 
 int main(){
-	srand(std::time(NULL)); // seed the random number generator
+	srand(time(NULL)); // seed the random number generator
 
 
 	for(int rep = 0; rep < NUM_SEQ; ++rep){
