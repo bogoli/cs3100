@@ -7,9 +7,9 @@
 #include <deque>
 
 
-const int NUM_SEQ = 10; // Number of sequences to test
+const int NUM_SEQ = 100; // Number of sequences to test
 const int SEQ_LEN = 1000; // Length of page sequences
-const int MAX_PAGE = 20; // Range of pages 
+const int MAX_PAGE = 250; // Range of pages 
 const int MAX_FRAMES = 100; // Range of frames to test
 
 bool contains(std::deque<int>& memory, int i){
@@ -46,6 +46,7 @@ int main(){
 				if(memory.size() < frames){
 					if(contains(memory, sequence[i]) == false){
 						memory.push_back(sequence[i]);
+						++page_faults;
 					}
 		 		}
 
@@ -59,14 +60,11 @@ int main(){
 
 			}// end for loop that circles through sequence
 
-			std::cout << "frames:  " << frames << std::endl;
-			std::cout << "page_faults:  " << page_faults << std::endl;
-			std::cout << "\n";
-
 			if (page_faults > prev_page_faults){	
 				std::cout << "Anomaly Detected: " << std::endl;
-				std::cout << "frames: " << frames << std::endl;
-				std::cout << "page_faults: " << page_faults << "  prev_page_faults: " << prev_page_faults << std::endl;
+				std::cout << "Sequence: " << rep << std::endl;
+				std::cout << "Page Faults: " << page_faults << " at " << frames << " frames." << std::endl;
+				std::cout << "Page Faults: " << prev_page_faults << " at " << (frames - 1) << " frames.\n\n";
 			}
 			prev_page_faults = page_faults;
 			page_faults = 0;
