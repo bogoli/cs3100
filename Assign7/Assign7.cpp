@@ -12,15 +12,16 @@ const int PAGE_SIZE = 250;	// max value of page
 const int MEM_SIZE = 100;	// number of frames to test
 const int NUM_SEQ = 100; 	// number of sequences to run
 
-typedef array<int, 1000> page_sequence;
+typedef std::array<int, 1000> page_sequence;
 
-array<page_sequence, NUM_SEQ> make_sequences(){
+std::array<page_sequence, NUM_SEQ> make_sequences(){
 	// make an array of arrays of 1000
-	array<page_sequence, NUM_SEQ> test_sequences;
+	std::array<page_sequence, NUM_SEQ> test_sequences;
 
 	for(int i = 0; i < NUM_SEQ; ++i){
+		test_sequences[i] = page_sequence();
 		for (int j = 0; j < SEQ_SIZE; ++j){
-			test_sequences<i,j>  = rand()%PAGE_SIZE;
+			test_sequences[i][j] = rand()%PAGE_SIZE;
 		}
 	}
 		
