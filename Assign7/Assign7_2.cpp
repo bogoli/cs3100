@@ -7,10 +7,20 @@
 #include <deque>
 
 
-const int NUM_SEQ = 100; // Number of sequences to test
+const int NUM_SEQ = 10; // Number of sequences to test
 const int SEQ_LEN = 1000; // Length of page sequences
 const int MAX_PAGE = 20; // Range of pages 
 const int MAX_FRAMES = 100; // Range of frames to test
+
+bool contains(std::deque<int>& memory, int i){
+	for(auto it=memory.begin(); it!=memory.end();++it){
+		if(*it == i){
+			return true;
+		}
+	}
+	return false;
+}
+
 
 int main(){
 	srand(std::time(NULL)); // seed the random number generator
@@ -28,40 +38,30 @@ int main(){
 		int prev_page_faults = 1001;
 		std::deque<int> memory;
 
+
 		for(int frames = 1; frames < MAX_FRAMES; ++frames){
 			memory.clear();
+
 			for (int i = 0; i < SEQ_LEN; ++i){ // iterate through one page sequence
 				if(memory.size() < frames){
-					// FIRST check to see if it's in memory before pushing and popping
-					for(auto it=memory.begin(); it!=memory.end();++it){
-						if(*it == sequence[i]){
-							// std::cout << "already in memory " << i <<  std::endl;
-							// std::cout << "*it " << *it << " sequence[i] " << sequence[i] <<  "     " << page_faults << std::endl;
-							break;
-						}
+					if(contains(memory, sequence[i]) == false){
+						memory.push_back(sequence[i]);
 					}
-					memory.push_back(sequence[i]);
-					// std::cout << "pushed back " << sequence[i] << std::endl;
 		 		}
 
 		 		if(memory.size() >= frames){
-		 			for(auto it=memory.begin(); it!=memory.end();++it){
-						if(*it == sequence[i]){
-							// std::cout << "already in memory " << sequence[i] <<  std::endl;
-							break;
-						}
+		 			if(contains(memory, sequence[i]) == false){
+						memory.pop_front();
+						memory.push_back(sequence[i]);
+						++page_faults;
 					}
-					// std::cout << "not in memory, popped, pushed.\n";
-					memory.pop_front();
-					memory.push_back(sequence[i]);
-					++page_faults;
 				}
 
 			}// end for loop that circles through sequence
 
 			std::cout << "frames:  " << frames << std::endl;
 			std::cout << "page_faults:  " << page_faults << std::endl;
-			std::cout << "\n\n\n";
+			std::cout << "\n";
 
 			if (page_faults > prev_page_faults){	
 				std::cout << "Anomaly Detected: " << std::endl;
