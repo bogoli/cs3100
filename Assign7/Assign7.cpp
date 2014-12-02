@@ -13,6 +13,7 @@ const int NUM_SEQ = 100; 	// number of sequences to run
 
 typedef std::array<int, SEQ_SIZE> page_sequence;
 
+
 std::array<page_sequence, NUM_SEQ> make_sequences(){
 	// make an array of arrays of 1000
 	std::array<page_sequence, NUM_SEQ> test_sequences;
@@ -26,10 +27,28 @@ std::array<page_sequence, NUM_SEQ> make_sequences(){
 	return test_sequences;
 }
 
+bool contains(int page, std::deque<int>& memory){
+	// if memory contains the page, return true
+	for(auto it = memory.begin(); it != memory.end(); ++it){
+		// dereference iterator (get the integer out of the iterator)
+		int myit = *it;
+		if(page == myit){
+			return true;
+		}
+	}
+	// else, memory doesn't contain page, return false
+	return false;
+}
 
-int do_test(int frames, std::deque<int>& memory, page_sequence& sequence){
+int do_test(int frames, page_sequence& sequence){
+	auto memory = std::deque<int>();
 	int page_faults = 0;
-	for(int page = 0; page < sequence.size(); ++page){
+	for(int i = 0; i < sequence.size(); ++i){
+		int page = sequence[i];
+		if(contains(page, memory)){
+			// page is already in memory
+			break;
+		}
 		// if the queue is smaller than the number of frames that we have
 		// add the page to the back of the queue
 		if(memory.size() < frames){
@@ -38,40 +57,32 @@ int do_test(int frames, std::deque<int>& memory, page_sequence& sequence){
 
 		// if not, increase page faults, pop off the front, push on the back
 		else {
+			assert(memory.size() == frames);
 			page_faults++;
 			memory.pop_front();
 			memory.push_back(page);
-
 		}
 	}
 	return page_faults;
 }
+void reportAnomalies(int sequence, int faults1, int size1, int faults2, int size2){
+	std::cout << "found anomaly for sequence: " << sequence << std::endl;
 
+}
 
-void setup_test(int size, std::array<page_sequence, NUM_SEQ>& test_sequences){
-	// allocate our "memory"
-	auto memory = std::deque<int>(); 
-	int page_faults = NUM_SEQ + 1;
-
-	// iterate through the different page sequences
-	for(int i = 0; i < test_sequences.size(); ++i){	
-		if(do_test(size, memory, test_sequences[i]) > page_faults){
-		
-			std::cout << "Anomaly Detected: " << std::endl;
-			std::cout << "Sequence: " << i << std::endl;
-			std::cout << "Number of Frames: " << size << std::endl;
-			std::cout << "Page_faults " << page_faults << std::endl;
-			std::cout << "- - - - - - - - - - - - - \n";
-		
-			page_faults = do_test(size, memory, test_sequences[i]);
-		}
-
-		else{
-			page_faults = do_test(size, memory, test_sequences[i]);
+void findAnomalies(std::array<page_sequence, NUM_SEQ>& test_sequences){
+	// for each of the frame sizes we need to test
+	for(int i = 0; i < NUM_SEQ; ++i){
+		int prev_page_faults = -1;
+		for(int frames = 1; frames <= MEM_SIZE; frames++){
+			int current_faults = do_test(frames, test_sequences[i]);
+			if(prev_page_faults != -1 && prev_page_faults < current_faults){
+				reportAnomalies(i, prev_page_faults, frames-1, current_faults, frames);
+			}
+			prev_page_faults = current_faults;
 		}
 	}
 }
-
 
 int main(){
 
@@ -82,6 +93,8 @@ int main(){
 
  	std::array<page_sequence, NUM_SEQ> test_sequences = make_sequences();
 
+ 	findAnomalies(test_sequences);
+
 /*
  	for(int i = 0; i < NUM_SEQ; ++i){
 		for (int j = 0; j < SEQ_SIZE; ++j){
@@ -90,14 +103,17 @@ int main(){
 		std::cout << std::endl;
 	}
 */
+	
 
-	// for each of the frame sizes we need to test
-	for(int frames = 1; frames <= MEM_SIZE; frames++){
-		setup_test(frames, test_sequences);
-	}
 
-	//print_results(results)
-	//}
 
 	return 0;
 }
+
+
+
+
+
+
+
+
