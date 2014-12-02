@@ -24,9 +24,10 @@ std::array<page_sequence, NUM_SEQ> make_sequences(){
 			test_sequences[i][j] = rand()%PAGE_SIZE;
 		}
 	}
-		
 	return test_sequences;
 }
+
+
 
 int main(){
 /*
@@ -39,7 +40,20 @@ int main(){
       and save it so we can use the exact same 
       sequences for each page size
  	*/
- 	// array<page_sequence, 100> test_sequences = make_sequences();
+ 	std::array<page_sequence, 100> test_sequences = make_sequences();
+
+ 	for(int i = 0; i < NUM_SEQ; ++i){
+		for (int j = 0; j < SEQ_SIZE; ++j){
+			std::cout << test_sequences[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+
+
+
+
+
+
 
 	// We'll eventually need to save the test results somewhere results is that somewhere
 	// 	auto results = //Something something
